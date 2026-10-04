@@ -1,0 +1,8 @@
+allowBuilds:
+  better-sqlite3: false
+  electron: true
+  electron-winstaller: true
+  esbuild: true
+  koffi: set this to true or false
+overrides:
+  "@electron/get": "3.1.0"

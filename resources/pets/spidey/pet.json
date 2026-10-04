@@ -1,0 +1,6 @@
+﻿{
+  "id": "spidey",
+  "displayName": "Spidey",
+  "description": "倒挂在蛛丝上的像素蜘蛛侠。记下或完成事项会弹出像素对话框，健康提醒会顺着蛛丝放到屏幕一半。",
+  "spritesheetPath": "spidey-hanging-cutout.png"
+}

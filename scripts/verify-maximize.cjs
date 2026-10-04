@@ -1,0 +1,10 @@
+const {_electron:electron}=require('playwright');const assert=require('node:assert/strict');const fs=require('node:fs');const path=require('node:path');
+(async()=>{const profile=fs.mkdtempSync(path.resolve('.pet-run/maximize-'));const env={...process.env};delete env.ELECTRON_RUN_AS_NODE;
+const packaged=process.argv.includes('--packaged');const client=await electron.launch({...(packaged?{executablePath:path.resolve('release/win-unpacked/TodoPet.exe')}:{ }),args:[...(packaged?[]:['.']),`--user-data-dir=${profile}`],env});try{
+let page;for(let i=0;i<100&&!page;i++){page=client.windows().find(p=>p.url().includes('index.html')&&!p.url().includes('view='));if(!page)await new Promise(r=>setTimeout(r,100))}assert.ok(page);await page.getByRole('button',{name:'最大化',exact:true}).waitFor();
+await page.getByRole('button',{name:'最大化',exact:true}).click();await page.getByRole('button',{name:'还原',exact:true}).waitFor();assert.equal(await client.evaluate(({BrowserWindow})=>BrowserWindow.getAllWindows().find(w=>!w.webContents.getURL().includes('view=')).isMaximized()),true);
+await page.reload();await page.getByRole('button',{name:'还原',exact:true}).waitFor();await page.getByRole('button',{name:'还原',exact:true}).click();await page.getByRole('button',{name:'最大化',exact:true}).waitFor();
+await client.evaluate(({BrowserWindow})=>BrowserWindow.getAllWindows().find(w=>!w.webContents.getURL().includes('view=')).maximize());await page.getByRole('button',{name:'还原',exact:true}).waitFor();
+await page.screenshot({path:path.resolve('.pet-run/maximize-icon-fixed.png')});
+await client.evaluate(({BrowserWindow})=>BrowserWindow.getAllWindows().find(w=>!w.webContents.getURL().includes('view=')).unmaximize());await page.getByRole('button',{name:'最大化',exact:true}).waitFor();console.log('PASS: maximize/restore click, reload, native maximize/unmaximize', {packaged,profile});
+}finally{await client.evaluate(({BrowserWindow})=>{for(const w of BrowserWindow.getAllWindows()){w.removeAllListeners('close');w.setClosable(true)}});await client.close()}})().catch(e=>{console.error(e);process.exitCode=1})
