@@ -175,6 +175,9 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 
 nav { display: grid; gap: 6px; }
 nav button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   border: 2.5px solid transparent;
   background: transparent;
   color: var(--muted);
@@ -184,7 +187,7 @@ nav button {
   font-size: 14px;
   font-weight: 650;
 }
-nav button span { display: inline-block; width: 22px; font-size: 16px; }
+.sidebar-icon { display: block; width: 20px; height: 20px; flex: none; }
 nav button:hover { color: var(--ink); background: rgba(20, 21, 26, .06); }
 /* 当前栏目：蓝底白字，图标染蜘蛛感应黄 */
 nav button.active {
@@ -194,7 +197,7 @@ nav button.active {
   box-shadow: var(--shadow-s);
   font-weight: 800;
 }
-nav button.active span { color: var(--sense-yellow); }
+nav button.active .sidebar-icon { color: var(--sense-yellow); }
 
 .sidebar-bottom { margin-top: auto; padding: 10px 4px 0; }
 .clock-out {

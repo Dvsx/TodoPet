@@ -7,6 +7,7 @@ import DayReport from './DayReport.vue'
 import HealthDuty from './HealthDuty.vue'
 import HealthRecording from './HealthRecording.vue'
 import NotesBoard from './NotesBoard.vue'
+import SidebarIcon from './SidebarIcon.vue'
 import { groupByDay } from './day-label'
 import type { Note, NoteInput, NoteKind, Task, TaskInput } from '../shared/types'
 import appIcon from '../../resources/icon/icon.png'
@@ -452,12 +453,12 @@ watch(selectedNote, () => {
       </div>
       <button class="new-task" @click="startNewTask">＋ 新建任务</button>
       <nav>
-        <button :class="{ active: view === 'tasks' }" @click="openTasks"><span>◷</span>任务清单</button>
-        <button :class="{ active: view === 'trash' }" @click="openTrash"><span>⊘</span>垃圾篓</button>
-        <button :class="{ active: view === 'spark' }" @click="openNotesSpark"><span>✦</span>灵感</button>
-        <button :class="{ active: view === 'wrap' }" @click="openNotesWrap"><span>✎</span>总结</button>
-        <button :class="{ active: view === 'review' }" @click="openReview"><span>▦</span>数据分析</button>
-        <button :class="{ active: view === 'health' }" @click="openHealth"><span>♡</span>健康记录</button>
+        <button :class="{ active: view === 'tasks' }" @click="openTasks"><SidebarIcon name="tasks" />任务清单</button>
+        <button :class="{ active: view === 'trash' }" @click="openTrash"><SidebarIcon name="trash" />垃圾篓</button>
+        <button :class="{ active: view === 'spark' }" @click="openNotesSpark"><SidebarIcon name="spark" />灵感</button>
+        <button :class="{ active: view === 'wrap' }" @click="openNotesWrap"><SidebarIcon name="wrap" />总结</button>
+        <button :class="{ active: view === 'review' }" @click="openReview"><SidebarIcon name="review" />数据分析</button>
+        <button :class="{ active: view === 'health' }" @click="openHealth"><SidebarIcon name="health" />健康记录</button>
       </nav>
       <div class="sidebar-bottom">
         <button class="clock-out" @click="clockOut">下班</button>
