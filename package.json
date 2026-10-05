@@ -1,6 +1,6 @@
 {
   "name": "todopet",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Harden",
   "description": "A local-first Windows todo and healthy-break companion with a pixel desktop pet.",
   "main": "out/main/index.js",

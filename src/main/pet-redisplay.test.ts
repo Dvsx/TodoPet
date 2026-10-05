@@ -74,7 +74,7 @@ vi.mock('electron', () => ({
 }))
 
 import { WindowManager } from './window-manager'
-import { hangOverlayBounds } from '../shared/hang-pet'
+import { hangOverlayBounds, petSpriteSize, toastExtra } from '../shared/hang-pet'
 
 type MockWindow = InstanceType<typeof mocks.BrowserWindow>
 type Internals = {
@@ -93,6 +93,7 @@ type Internals = {
   freezePetInteraction(): void
   checkActivityReturn(): void
   runRecover(reason: OverlayRecoverReason): void
+  ensurePetOnScreen(): void
 }
 const spriteRegion = [{ x: 194, y: 0, width: 108, height: 217 }]
 
@@ -124,6 +125,29 @@ beforeEach(() => {
   mocks.state.windows = []
 })
 afterEach(() => { vi.clearAllTimers(); vi.useRealTimers(); vi.restoreAllMocks() })
+
+describe('pet drag edges', () => {
+  it('reaches and persists both edges without resizing or bouncing back during screen correction', () => {
+    const { manager, window, internal } = setup()
+    const size = manager.getPetSettings().size
+    const sprite = petSpriteSize(size)
+    const work = mocks.display().workArea
+    const initial = window.getBounds()
+    for (const [dx, expectedX] of [[10000, work.x + work.width - sprite.width], [-10000, work.x]]) {
+      manager.nudgePet(dx, 0)
+      manager.endPetDrag()
+      const bounds = window.getBounds()
+      expect(bounds.x + toastExtra()).toBe(expectedX)
+      expect(bounds.width).toBe(initial.width)
+      expect(bounds.height).toBe(initial.height)
+      expect(manager.getPetSettings().x).toBe(expectedX)
+      manager.setToastVisible(true)
+      manager.setToastVisible(false)
+      internal.ensurePetOnScreen()
+      expect(window.getBounds()).toEqual(bounds)
+    }
+  })
+})
 
 describe('unavailable-screen reminder presentation', () => {
   it('clears already-delivered health animations and both main-process queues', () => {

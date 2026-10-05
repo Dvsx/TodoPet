@@ -63,7 +63,9 @@ export function hangOverlayBounds(
   // caption strip and forces Chromium to redraw the whole pet.
   const left = toastExtra()
   const right = SHAKE_PAD
-  const maxSpriteX = work.x + Math.max(0, work.width - sprite.width - right)
+  // Clamp the sprite, not its transparent animation padding. Like the toast
+  // canvas on the left, the shake canvas may extend beyond the work area.
+  const maxSpriteX = work.x + Math.max(0, work.width - sprite.width)
   const defaultSpriteX = work.x + work.width - sprite.width - right - HANG_EDGE_MARGIN
   const spriteX = clamp(anchor.x ?? defaultSpriteX, work.x, maxSpriteX)
   const maxSpriteY = work.y + Math.max(0, work.height - sprite.height)
